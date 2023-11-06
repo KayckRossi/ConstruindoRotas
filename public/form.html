@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/sweetalert2.css">
+
+    <script src="/jquery/jquery.js"></script>
+    <script src="/jquery/jquery-ui.js"></script>
+    <script src="/jquery/global.js"></script>
+    <script src="/jquery/sweetalert2.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="header">
+
+    </div>
+
+    <div class="container pt-5">
+        <div class="card mt-260px">
+            <div class="card-header">
+                <h1 class="text-center">Cadastro</h1>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Forms cadastro</h5>
+
+                <form method="post" id="formcadastro" action="/formulario/processar-formulario">
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
+                            placeholder="digite seu email bb">
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="senha" name="senha"
+                            placeholder="digite a senha bb">
+                    </div>
+
+                    <div id="erro" style="color: red;"></div>
+
+                    <button type="submit" class="btn btn-primary">enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const formulario = document.querySelector("form");
+            const erro = document.getElementById("erro");
+
+            formulario.addEventListener("submit", function (event) {
+                console.log("Evento de submissão do formulário acionado.");
+                erro.innerHTML = "";
+
+                const email = document.getElementById("email").value;
+                const senha = document.getElementById("senha").value;
+
+                if (email === "" || senha === "") {
+                    erro.innerHTML = "Preencha todos os campos.";
+                    event.preventDefault();
+                } else if (senha.length < 6) {
+                    erro.innerHTML = "A senha deve ter pelo menos 6 caracteres.";
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
