@@ -1,15 +1,32 @@
 function adicionarNavbar(elementoId, caminhoCadastro, caminhoLogin) {
-    $(elementoId).append('<nav class="navbar navbar-expand-lg bg-body-tertiary">'+
-    '<div class="container-fluid">'+
-    '<a class="navbar-brand" href="' + caminhoCadastro + '">Cadastro</a>'+
-    '<a class="navbar-brand" href="' + caminhoLogin + '">Login</a>'+
-    '</div>'+
-    '</nav>');
+    let navbar = `
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="${caminhoCadastro}">Cadastro</a>
+            <a class="navbar-brand" href="${caminhoLogin}">Login</a>
+        </div>
+    </nav>`;
+    $(elementoId).append(navbar);
+};
+
+var estaLogado = false;
+
+function criarSidebar() {
+    let sidebar = `
+    <div id="sidebar">
+        <ul class="sidebar-nav">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/sobre">Sobre</a></li>
+            <li><a href="/contato">Contato</a></li>
+        </ul>
+    </div>`;
+    $('#sidebar').prepend(sidebar);
 };
 
 $(function() {
     adicionarNavbar('#header', '/formulario', '/login');
-
+    estaLogado = true;
+    //criarSidebar();
     // Quando o formulário é enviado...
     $('#formcadastro').on('submit', function(e) {
         e.preventDefault();
@@ -31,6 +48,7 @@ $(function() {
                 } else if (data.success) {
                     // Redireciona para a página de login
                     window.location.href = '/login';
+                    
                 } else {
                     // Trata outros erros
                     Swal.fire({
@@ -71,6 +89,7 @@ $(function() {
                         console.log('Erro detectado na resposta.');
                         swal("Erro", data.error, "error");
                     } else {
+                
                         console.log('Sucesso detectado na resposta.');
                         window.location.href = '/sucesso.html';
                     }

@@ -23,7 +23,7 @@
     </div>
 
     <div class="container pt-5">
-        <div class="card mt-260px">
+        <div class="card">
             <div class="card-header">
                 <h1 class="text-center">Cadastro</h1>
             </div>
@@ -32,15 +32,15 @@
 
                 <form method="post" id="formcadastro" action="/formulario/processar-formulario">
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
-                            placeholder="digite seu email bb">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="email"
+                            placeholder="Digite seu email">
+                        <label for="floatingInput">Email</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="senha" class="form-label">Senha</label>
-                        <input type="password" class="form-control" id="senha" name="senha"
-                            placeholder="digite a senha bb">
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="senha"
+                            placeholder="Password">
+                        <label for="floatingPassword">Senha</label>
                     </div>
 
                     <div id="erro" style="color: red;"></div>

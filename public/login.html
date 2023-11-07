@@ -31,15 +31,17 @@
                     </div>
                     <div class="card-body">
                         <form action="/autenticacao/login" id="formsLogin" method="POST">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email:</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="email"
+                                    placeholder="Digite seu email">
+                                <label for="floatingInput">Email</label>
                             </div>
-                            <div class="mb-3">
-                                <label for="senha" class="form-label">Senha:</label>
-                                <input type="password" class="form-control" id="senha" name="senha" required>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="senha"
+                                    placeholder="Password">
+                                <label for="floatingPassword">Senha</label>
                             </div>
-                            <button type="submit" class="btn btn-primary">Entrar</button>
+                            <button type="submit" class="btn btn-primary col-12">Entrar</button>
                         </form>
                     </div>
                 </div>
