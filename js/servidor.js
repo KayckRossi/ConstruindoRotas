@@ -4,6 +4,19 @@ const app = express();
 const port = 5500;
 const path = require('path');
 
+const crypto = require('crypto');
+const session = require('express-session');
+
+// Gera um novo 'secret' cada vez que o servidor é iniciado
+let secret = crypto.randomBytes(64).toString('hex');
+app.use(session({
+    secret: secret, // Use a string gerada como 'secret'
+    resave: false,
+    saveUninitialized: true
+}));
+
+
+
 // Middleware para processar dados de formulário
 app.use(express.urlencoded({ extended: true }));
 
@@ -11,6 +24,7 @@ const db = require('./database'); // Importa a conexão com o banco de dados
 
 const formularioRouter = require('./formularioRouter');
 const autenticacaoRouter = require('./autenticacaoRouter');
+const { send } = require('process');
 
 app.use('/formulario', formularioRouter); // Rotas para o formulário
 app.use('/autenticacao', autenticacaoRouter); // Rotas para autenticação
@@ -29,8 +43,14 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/sucesso.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/sucesso.html'));
+    if (!req.session.user) {
+        res.redirect('/login');
+    } else {
+        res.sendFile(path.join(__dirname, '../public/sucesso.html'));
+    }
 });
+
+console.log(app.get('/login'));
 
 app.get('/erro.html', (req, res) => {
     res.sendFile(path.join(__dirname,'../public/erro.html'));

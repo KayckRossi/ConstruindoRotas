@@ -25,13 +25,16 @@ router.post('/login', (req, res) => {
         } else if (result.length > 0) {
             // Se o resultado não estiver vazio, significa que as credenciais estão corretas
             console.log('Login bem-sucedido.');
+            req.session.user = email; // Adicione esta linha
             res.json({ success: true });
         } else {
             // Se o resultado estiver vazio, as credenciais estão incorretas
-            res.json({ error: 'E-mail ou senha incorretos.' });
+            res.status(401).json({ error: 'E-mail ou senha incorretos.' });
         }
     });
 });
+
+
 
 
 module.exports = router;

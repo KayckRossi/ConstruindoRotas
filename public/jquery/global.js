@@ -74,32 +74,23 @@ $(function() {
         var email = $('#email').val();
         var senha = $('#senha').val();
         
-        console.log('E-mail: ' + email);
-        console.log('Senha: ' + senha);
-    
         if (email === "" || senha === "") {
-            console.log('Campos vazios detectados.');
-            swal("Erro", "Por favor, preencha todos os campos.", "error");
+            Swal.fire("Erro", "Por favor, preencha todos os campos.", "error");
         } else {
-            console.log('Enviando solicitação POST para /autenticacao/login');
             $.post('/autenticacao/login', { email: email, senha: senha })
                 .done(function(data) {
-                    console.log('Resposta recebida:', data);
                     if (data.error) {
-                        console.log('Erro detectado na resposta.');
-                        swal("Erro", data.error, "error");
+                        Swal.fire("Erro", data.error, "error");
                     } else {
-                
-                        console.log('Sucesso detectado na resposta.');
                         window.location.href = '/sucesso.html';
                     }
                 })
                 .fail(function() {
-                    console.log('Falha ao enviar a solicitação POST.');
-                    swal("Erro", "Ocorreu um erro ao processar o login.", "error");
+                    Swal.fire("Erro", "Email ou senha incorretos", "error");
                 });
         }
     });
+    
     
     
 });
