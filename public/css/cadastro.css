@@ -1,0 +1,25 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.container-cadastro {
+    padding-top: 10rem;
+}
+
+.img-respons {
+    width: 100%;
+    height: 100%;
+}
+
+/* Alterar a cor de fundo do botão de rádio quando não estiver marcado */
+input[type="radio"]:not(:checked) + label::before {
+    border-color: #4ad613;
+}
+
+/* Alterar a cor de fundo do botão de rádio quando estiver marcado */
+.custom-radio .custom-control-input:checked~.custom-control-label::before {
+    background-color: #1337d6;
+}
