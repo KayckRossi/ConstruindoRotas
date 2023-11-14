@@ -15,8 +15,6 @@ app.use(session({
     saveUninitialized: true
 }));
 
-
-
 // Middleware para processar dados de formulário
 app.use(express.urlencoded({ extended: true }));
 

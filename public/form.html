@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="/css/jquery-ui.css">
     <link rel="stylesheet" href="/css/theme.css">
     <link rel="stylesheet" href="/css/sweetalert2.css">
+    <link rel="stylesheet" href="/css/cadastro.css">
+
 
     <script src="/jquery/jquery.js"></script>
     <script src="/jquery/jquery-ui.js"></script>
@@ -22,8 +24,8 @@
 
     </div>
 
-    <div class="container pt-5">
-        <div class="card">
+    <div class="container w-50 center pt-5">
+        <div class="card ">
             <div class="card-header">
                 <h1 class="text-center">Cadastro</h1>
             </div>
@@ -33,22 +35,51 @@
                 <form method="post" id="formcadastro" action="/formulario/processar-formulario">
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="email"
-                            placeholder="Digite seu email">
+                        <input type="text" class="form-control" id="NomeCad" placeholder="Name " >
+                        <label for="floatingInput">Nome</label>
+                    </div>
+                  
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="email" placeholder="Email" >
                         <label for="floatingInput">Email</label>
                     </div>
+                    
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" id="senha"
-                            placeholder="Password">
+                        <input type="password" class="form-control" id="senha" placeholder="Password" >
                         <label for="floatingPassword">Senha</label>
                     </div>
+                    <div class="row" id="rad-pj-pf">
+                        <div class="col" style="margin-left: 2px;">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="radioCnpj-cpf" id="inlineRadio1"
+                                    value="option1">
+                                <label class="form-check-label" for="inlineRadio1">CPF</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input bg-gradient-indigo" type="radio" name="radioCnpj-cpf" id="inlineRadio2"
+                                    value="option2">
+                                <label class="form-check-label" for="inlineRadio2">CNPJ</label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="form-floating mb-3" id="divCpf">
+                        <input type="text" class="form-control" id="CadCpf" placeholder="CPF ">
+                        <label for="floatingInput">CPF</label>
+                    </div>
 
+                    <div class="form-floating mb-3" id="divCnpj">
+                        <input type="text" class="form-control" id="CadCnpj" placeholder="CNPJ ">
+                        <label for="floatingInput">CNPJ</label>
+                    </div>
+                                        
                     <div id="erro" style="color: red;"></div>
 
-                    <button type="submit" class="btn btn-primary">enviar</button>
+                    <button type="submit" class="btn btn-primary col-12">enviar</button>
                 </form>
             </div>
         </div>
+    </div>
     </div>
 
     <script>

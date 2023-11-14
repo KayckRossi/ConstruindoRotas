@@ -13,20 +13,31 @@ router.post('/processar-formulario', (req, res) => {
     console.log('Recebendo solicitação de submissão do formulário.');
     const email = req.body.email;
     const senha = req.body.senha;
+    const cpf = req.body.cpf;
+    const cnpj = req.body.cnpj;
+    const nome = req.body.nome;
 
-    // Primeiro, verifique se o e-mail já existe
-    const checkSql = "SELECT * FROM usuarios WHERE email = ?";
-    db.query(checkSql, [email], (err, result) => {
+    // Primeiro, verifique se o e-mail, CPF ou CNPJ já existem
+    const checkSql = "SELECT * FROM usuarios WHERE email = ? OR cpf = ? OR cnpj = ?";
+    db.query(checkSql, [email, cpf, cnpj], (err, result) => {
         if (err) {
-            console.error('Erro ao verificar o e-mail: ' + err);
-            res.json({ error: 'Erro ao verificar o e-mail no banco de dados.' });
+            console.error('Erro ao verificar o e-mail, CPF ou CNPJ: ' + err);
+            res.json({ error: 'Erro ao verificar o e-mail, CPF ou CNPJ no banco de dados.' });
         } else if (result.length > 0) {
-            // Se o resultado não estiver vazio, significa que o e-mail já existe
-            res.json({ error: 'Este e-mail já está sendo usado.' });
+            // Se o resultado não estiver vazio, significa que o e-mail, CPF ou CNPJ já existem
+            res.json({ error: 'Este e-mail, CPF ou CNPJ já está sendo usado.' });
         } else {
-            // Se o e-mail não existir, insira o novo usuário
-            const sql = "INSERT INTO usuarios (email, senha) VALUES (?, ?)";
-            db.query(sql, [email, senha], (err, result) => {
+            // Se o e-mail, CPF ou CNPJ não existirem, insira o novo usuário
+            let sql;
+            let values;
+            if (cpf) {
+                sql = "INSERT INTO usuarios (email, senha, cpf, nome) VALUES (?, ?, ?, ?)";
+                values = [email, senha, cpf, nome];
+            } else if (cnpj) {
+                sql = "INSERT INTO usuarios (email, senha, cnpj, nome) VALUES (?, ?, ?, ?)";
+                values = [email, senha, cnpj, nome];
+            }
+            db.query(sql, values, (err, result) => {
                 if (err) {
                     console.error('Erro ao inserir dados: ' + err);
                     res.json({ error: 'Erro ao inserir dados no banco de dados.' });

@@ -10,11 +10,14 @@ router.get('/login', (req, res) => {
 });
 
 // Rota POST para '/login'
-// Rota POST para '/login'
-// Rota POST para '/login'
+
 router.post('/login', (req, res) => {
     const email = req.body.email;
     const senha = req.body.senha;
+
+    console.log('E-mail recebido: ' + email);
+    console.log('Senha recebida: ' + senha);
+
 
     // Verifique se o e-mail e a senha correspondem a um usuário existente
     const checkSql = "SELECT * FROM usuarios WHERE email = ? AND senha = ?";

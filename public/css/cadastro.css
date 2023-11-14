@@ -1,0 +1,20 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container-cadastro {
+    padding-top: 10rem;
+}
+
+.img-respons {
+    width: 100%;
+    height: 100%;
+}
+
+/* Alterar a cor de fundo do botão de rádio quando não estiver marcado */
+.form-check-input:checked {
+    background-color: #29fd0d!important;
+    border-color: #000000!important;
+}
