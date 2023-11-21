@@ -158,6 +158,90 @@ $(function () {
                 title: 'Oops...',
                 text: 'Por favor, preencha o campo de CPF.',
             }).then(function () {
+
+    adicionarNavbar('#header', '/formulario', '/login');
+    estaLogado = true;
+    //criarSidebar();
+    // Adicione esta função para fazer um campo piscar
+    // Adicione esta função para fazer um campo piscar
+// Adicione esta função para fazer um campo piscar
+function blinkErrorField(field) {
+    field.css('border', '2px solid red');
+    setTimeout(function() {
+        field.css('border', '');
+    }, 500);
+}
+
+$('#formcadastro').on('submit', function(e) {
+    e.preventDefault();
+
+    var email = $('#email');
+    var senha = $('#senha');
+    var cpf = $('#CadCpf');
+    var cnpj = $('#CadCnpj');
+    var nome = $('#NomeCad');
+
+    // Verifique se os campos estão vazios
+    if (!email.val()) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Por favor, preencha o campo de e-mail.',
+        }).then(function() {
+            email.focus();
+            blinkErrorField(email);
+        });
+        return false;
+    } else if (!senha.val()) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Por favor, preencha o campo de senha.',
+        }).then(function() {
+            senha.focus();
+            blinkErrorField(senha);
+        });
+        return false;
+    } else if (!nome.val()) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Por favor, preencha o campo de nome.',
+        }).then(function() {
+            nome.focus();
+            blinkErrorField(nome);
+        });
+        return false;
+    } else if (document.getElementById('inlineRadio1').checked && !cpf.val()) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Por favor, preencha o campo de CPF.',
+        }).then(function() {
+            cpf.focus();
+            blinkErrorField(cpf);
+        });
+        return false;
+    } else if (document.getElementById('inlineRadio2').checked && !cnpj.val()) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Por favor, preencha o campo de CNPJ.',
+        }).then(function() {
+            cnpj.focus();
+            blinkErrorField(cnpj);
+        });
+        return false;
+    }
+
+    // Validação de CPF e CNPJ
+    if (document.getElementById('inlineRadio1').checked) {
+        if (!validaCPF(cpf.val())) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'CPF inválido!',
+            }).then(function() {
                 cpf.focus();
                 blinkErrorField(cpf);
             });
@@ -168,11 +252,21 @@ $(function () {
                 title: 'Oops...',
                 text: 'Por favor, preencha o campo de CNPJ.',
             }).then(function () {
+
+        }
+    } else if (document.getElementById('inlineRadio2').checked) {
+        if (!validaCNPJ(cnpj.val())) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'CNPJ inválido!',
+            }).then(function() {
                 cnpj.focus();
                 blinkErrorField(cnpj);
             });
             return false;
         }
+
 
         // Validação de CPF e CNPJ
         if (document.getElementById('inlineRadio1').checked) {
@@ -242,12 +336,69 @@ $(function () {
                 }
             })
             .fail(function () {
+    }
+
+    // Faça uma solicitação POST para o servidor
+    $.post('/formulario/processar-formulario', { email: email.val(), senha: senha.val(), cpf: cpf.val(), cnpj: cnpj.val(), nome: nome.val() })
+        .done(function(data) {
+            if (data.error) {
+                // Exibe um alerta SweetAlert na mesma página
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Ocorreu um erro ao processar o formulário.',
+                    text: data.error,
+                }).then(function() {
+                    if (data.error.includes('email')) {
+                        email.focus();
+                        blinkErrorField(email);
+                    } else if (data.error.includes('senha')) {
+                        senha.focus();
+                        blinkErrorField(senha);
+                    } else if (data.error.includes('nome')) {
+                        nome.focus();
+                        blinkErrorField(nome);
+                    } else if (data.error.includes('CPF')) {
+                        cpf.focus();
+                        blinkErrorField(cpf);
+                    } else if (data.error.includes('CNPJ')) {
+                        cnpj.focus();
+                        blinkErrorField(cnpj);
+                    }
                 });
+            } else if (data.success) {
+                // Redireciona para a página de login
+                window.location.href = '/login';
+                
+            } else {
+                // Trata outros erros
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro desconhecido.',
+                });
+            }
+        })
+        .fail(function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Ocorreu um erro ao processar o formulário.',
             });
+        });
+});
+
+
+    $('input[type=radio][name=radioCnpj-cpf]').on('click', function () {
+        if (this.value == 'option1') {
+            $('#divCnpj').fadeOut(500, function () {
+                $('#divCpf').fadeIn(500);
+            });
+        }
+        else if (this.value == 'option2') {
+            $('#divCpf').fadeOut(500, function () {
+                $('#divCnpj').fadeIn(500);
+            });
+        }
     });
 
 
@@ -289,6 +440,4 @@ $(function () {
                 });
         }
     });
-
-    
 });
