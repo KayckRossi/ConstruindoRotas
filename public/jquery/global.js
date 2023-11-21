@@ -99,8 +99,12 @@ function criarSidebar() {
 };
 
 $(function () {
+    let nomeUsuario = "{{nomeUsuario}}"; // Substitua "{{nomeUsuario}}" pelo nome do usuário passado para a renderização do servidor
+    if (nomeUsuario) {
+        $('#NomeLogin').text(nomeUsuario);
+    }
     $("#divCnpj").hide();
-     adicionarNavbar('#header', '/formulario', '/login');
+    adicionarNavbar('#header', '/cadastro', '/login');
     //  adicionarNavbar('#home-nav', '/formulario', '/login');
     estaLogado = true;
     //criarSidebar();
@@ -158,90 +162,6 @@ $(function () {
                 title: 'Oops...',
                 text: 'Por favor, preencha o campo de CPF.',
             }).then(function () {
-
-    adicionarNavbar('#header', '/formulario', '/login');
-    estaLogado = true;
-    //criarSidebar();
-    // Adicione esta função para fazer um campo piscar
-    // Adicione esta função para fazer um campo piscar
-// Adicione esta função para fazer um campo piscar
-function blinkErrorField(field) {
-    field.css('border', '2px solid red');
-    setTimeout(function() {
-        field.css('border', '');
-    }, 500);
-}
-
-$('#formcadastro').on('submit', function(e) {
-    e.preventDefault();
-
-    var email = $('#email');
-    var senha = $('#senha');
-    var cpf = $('#CadCpf');
-    var cnpj = $('#CadCnpj');
-    var nome = $('#NomeCad');
-
-    // Verifique se os campos estão vazios
-    if (!email.val()) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Por favor, preencha o campo de e-mail.',
-        }).then(function() {
-            email.focus();
-            blinkErrorField(email);
-        });
-        return false;
-    } else if (!senha.val()) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Por favor, preencha o campo de senha.',
-        }).then(function() {
-            senha.focus();
-            blinkErrorField(senha);
-        });
-        return false;
-    } else if (!nome.val()) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Por favor, preencha o campo de nome.',
-        }).then(function() {
-            nome.focus();
-            blinkErrorField(nome);
-        });
-        return false;
-    } else if (document.getElementById('inlineRadio1').checked && !cpf.val()) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Por favor, preencha o campo de CPF.',
-        }).then(function() {
-            cpf.focus();
-            blinkErrorField(cpf);
-        });
-        return false;
-    } else if (document.getElementById('inlineRadio2').checked && !cnpj.val()) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Por favor, preencha o campo de CNPJ.',
-        }).then(function() {
-            cnpj.focus();
-            blinkErrorField(cnpj);
-        });
-        return false;
-    }
-
-    // Validação de CPF e CNPJ
-    if (document.getElementById('inlineRadio1').checked) {
-        if (!validaCPF(cpf.val())) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'CPF inválido!',
-            }).then(function() {
                 cpf.focus();
                 blinkErrorField(cpf);
             });
@@ -252,21 +172,11 @@ $('#formcadastro').on('submit', function(e) {
                 title: 'Oops...',
                 text: 'Por favor, preencha o campo de CNPJ.',
             }).then(function () {
-
-        }
-    } else if (document.getElementById('inlineRadio2').checked) {
-        if (!validaCNPJ(cnpj.val())) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'CNPJ inválido!',
-            }).then(function() {
                 cnpj.focus();
                 blinkErrorField(cnpj);
             });
             return false;
         }
-
 
         // Validação de CPF e CNPJ
         if (document.getElementById('inlineRadio1').checked) {
@@ -296,7 +206,7 @@ $('#formcadastro').on('submit', function(e) {
         }
 
         // Faça uma solicitação POST para o servidor
-        $.post('/formulario/processar-formulario', { email: email.val(), senha: senha.val(), cpf: cpf.val(), cnpj: cnpj.val(), nome: nome.val() })
+        $.post('/cadastro/processar-formulario', { email: email.val(), senha: senha.val(), cpf: cpf.val(), cnpj: cnpj.val(), nome: nome.val() })
             .done(function (data) {
                 if (data.error) {
                     // Exibe um alerta SweetAlert na mesma página
@@ -336,69 +246,12 @@ $('#formcadastro').on('submit', function(e) {
                 }
             })
             .fail(function () {
-    }
-
-    // Faça uma solicitação POST para o servidor
-    $.post('/formulario/processar-formulario', { email: email.val(), senha: senha.val(), cpf: cpf.val(), cnpj: cnpj.val(), nome: nome.val() })
-        .done(function(data) {
-            if (data.error) {
-                // Exibe um alerta SweetAlert na mesma página
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: data.error,
-                }).then(function() {
-                    if (data.error.includes('email')) {
-                        email.focus();
-                        blinkErrorField(email);
-                    } else if (data.error.includes('senha')) {
-                        senha.focus();
-                        blinkErrorField(senha);
-                    } else if (data.error.includes('nome')) {
-                        nome.focus();
-                        blinkErrorField(nome);
-                    } else if (data.error.includes('CPF')) {
-                        cpf.focus();
-                        blinkErrorField(cpf);
-                    } else if (data.error.includes('CNPJ')) {
-                        cnpj.focus();
-                        blinkErrorField(cnpj);
-                    }
+                    text: 'Ocorreu um erro ao processar o formulário.',
                 });
-            } else if (data.success) {
-                // Redireciona para a página de login
-                window.location.href = '/login';
-                
-            } else {
-                // Trata outros erros
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Ocorreu um erro desconhecido.',
-                });
-            }
-        })
-        .fail(function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Ocorreu um erro ao processar o formulário.',
             });
-        });
-});
-
-
-    $('input[type=radio][name=radioCnpj-cpf]').on('click', function () {
-        if (this.value == 'option1') {
-            $('#divCnpj').fadeOut(500, function () {
-                $('#divCpf').fadeIn(500);
-            });
-        }
-        else if (this.value == 'option2') {
-            $('#divCpf').fadeOut(500, function () {
-                $('#divCnpj').fadeIn(500);
-            });
-        }
     });
 
 
@@ -418,26 +271,36 @@ $('#formcadastro').on('submit', function(e) {
     });
 
 
-    $('#formsLogin').on('submit', function(e) {
+    $('#formsLogin').on('submit', function (e) {
         e.preventDefault();
-    
+
         var email = $('#email').val();
         var senha = $('#senha').val();
-        
+
+
+
         if (email === "" || senha === "") {
             Swal.fire("Erro", "Por favor, preencha todos os campos.", "error");
         } else {
             $.post('/autenticacao/login', { email: email, senha: senha })
-                .done(function(data) {
-                    if (data.error) {
-                        Swal.fire("Erro", data.error, "error");
-                    } else {
+            .done(function(data) {
+                if (data.error) {
+                    Swal.fire("Erro", data.error, "error");
+                } else {
+                    // Armazene o nome do usuário na sessão do navegador
+                    sessionStorage.setItem('nomeUsuario', data.nomeUsuario);
+                    // Redirecione para 'sucesso.html' após um pequeno atraso
+                    setTimeout(function() {
                         window.location.href = '/sucesso.html';
-                    }
-                })
-                .fail(function() {
-                    Swal.fire("Erro", "Email ou senha incorretos", "error");
-                });
+                    }, 1000); // Ajuste o atraso conforme necessário
+                }
+            })
+            .fail(function() {
+                Swal.fire("Erro", "Email ou senha incorretos", "error");
+            });
+        
         }
     });
+
+
 });

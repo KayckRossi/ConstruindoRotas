@@ -1,5 +1,5 @@
-// Importe o objeto modulos
-function navHome() {
+// Modifique a função navHome para aceitar o nome do usuário como um argumento
+function navHome(nomeUsuario) {
     const nav = `
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
@@ -14,7 +14,9 @@ function navHome() {
                     </li>
                    
                 </ul>
-                <form class="d-flex" role="search">
+
+                <h4 class="nav-item me-3"><a class="nav-link" id="NomeLogin" href="#">${nomeUsuario}</a></h4>
+                <form class="d-flex " role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
@@ -22,9 +24,10 @@ function navHome() {
         </div>
     </nav>`;
     return nav;
-
 }
 
 $(function() {
-    $('#home-nav').prepend(navHome());
+    // Obtenha o nome do usuário da sessão do navegador
+    let nomeUsuario = sessionStorage.getItem('nomeUsuario');
+    $('#home-nav').prepend(navHome(nomeUsuario));
 });

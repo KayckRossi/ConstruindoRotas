@@ -3,10 +3,31 @@ const router = express.Router();
 const db = require('./database');
 const path = require('path'); // Importe o módulo 'path'
 
+
+function tratarNome(nome) {
+    var mapaAcentosHex  = {
+        a : /[\xE0-\xE6]/g,
+        e : /[\xE8-\xEB]/g,
+        i : /[\xEC-\xEF]/g,
+        o : /[\xF2-\xF6]/g,
+        u : /[\xF9-\xFC]/g,
+        c : /\xE7/g,
+        n : /\xF1/g,
+        y : /\xFD/g
+    };
+
+    for (var letra in mapaAcentosHex) {
+        var expressaoRegular = mapaAcentosHex[letra];
+        nome = nome.replace(expressaoRegular, letra);
+    }
+
+    return nome;
+}
 // Rota para servir o arquivo HTML de formulário
 router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/form.html')); // Atualize o caminho para encontrar o arquivo HTML corretamente
+    res.sendFile(path.join(__dirname, '../public/cadastro.html')); // Atualize o caminho para encontrar o arquivo HTML corretamente
 });
+
 
 // Rota para processar o envio do formulário
 router.post('/processar-formulario', (req, res) => {
@@ -15,7 +36,10 @@ router.post('/processar-formulario', (req, res) => {
     const senha = req.body.senha;
     const cpf = req.body.cpf;
     const cnpj = req.body.cnpj;
-    const nome = req.body.nome;
+    let nome = req.body.nome;
+
+
+    nome = tratarNome(nome);
 
     // Primeiro, verifique se o e-mail, CPF ou CNPJ já existem
     const checkSql = "SELECT * FROM usuarios WHERE email = ? OR cpf = ? OR cnpj = ?";

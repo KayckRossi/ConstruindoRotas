@@ -8,16 +8,14 @@ const db = require('./database'); // O caminho pode variar dependendo da estrutu
 router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/login.html')); // Atualize o caminho para encontrar o arquivo HTML corretamente
 });
-
 // Rota POST para '/login'
-
+// Rota POST para '/login'
 router.post('/login', (req, res) => {
     const email = req.body.email;
     const senha = req.body.senha;
 
     console.log('E-mail recebido: ' + email);
     console.log('Senha recebida: ' + senha);
-
 
     // Verifique se o e-mail e a senha correspondem a um usuário existente
     const checkSql = "SELECT * FROM usuarios WHERE email = ? AND senha = ?";
@@ -28,16 +26,16 @@ router.post('/login', (req, res) => {
         } else if (result.length > 0) {
             // Se o resultado não estiver vazio, significa que as credenciais estão corretas
             console.log('Login bem-sucedido.');
+            console.log(result[0]); // Adicione esta linha para imprimir o resultado da consulta SQL
             req.session.user = email; // Adicione esta linha
-            res.json({ success: true });
+            req.session.nomeUsuario = result[0].nome; // Armazene o nome do usuário na sessão
+            res.json({ success: true, nomeUsuario: result[0].nome }); // Retorne o nome do usuário na resposta
         } else {
             // Se o resultado estiver vazio, as credenciais estão incorretas
             res.status(401).json({ error: 'E-mail ou senha incorretos.' });
         }
     });
 });
-
-
 
 
 module.exports = router;

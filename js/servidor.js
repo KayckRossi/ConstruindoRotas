@@ -24,7 +24,7 @@ const formularioRouter = require('./formularioRouter');
 const autenticacaoRouter = require('./autenticacaoRouter');
 const { send } = require('process');
 
-app.use('/formulario', formularioRouter); // Rotas para o formulário
+app.use('/cadastro', formularioRouter); // Rotas para o formulário
 app.use('/autenticacao', autenticacaoRouter); // Rotas para autenticação
 
 // Configure o Express para servir arquivos estáticos da pasta "public"
@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // Defina a rota raiz para servir seu arquivo "form.html" da pasta "public"
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'form.html'));
+    res.sendFile(path.join(__dirname, 'public', 'cadastro.html'));
 });
 
 // Adicione outra rota para servir o arquivo "login.html"
